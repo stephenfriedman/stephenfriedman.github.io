@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .overallGrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      background-color: #2196F3;
+      padding: 0.5em;
+      grid-gap: 3em 1.5em;
+      text-align: center;
+    }
+
+    .gameBox {
+      display: grid;
+      grid-template-columns: 50% 15% 35%;
+      background-color: rgb(206, 0, 189);
+      height: 16.5em;
+      text-align: center;
+    }
+
+    .teamsBox {
+      display: grid;
+      grid-template-columns: 200px;
+      text-align: center;
+      font-size: 6em;
+      background-color: rgb(212, 157, 69);
+    }
+
+    .scoreBox {
+      display: grid;
+      grid-template-columns: 50px;
+      text-align: center;
+      font-size: 6em;
+      background-color: rgb(255, 255, 255);
+      font-weight: bold;
+
+
+    }
+
+    .timeBox {
+      display: grid;
+      grid-template-columns: 200px;
+      text-align: center;
+      background-color: rgb(0, 206, 69);
+      font-size: 6em;
+      font-weight: bold;
+    }
+
+    .periodBox {
+      font-weight: normal;
+      text-align: center;
+    }
+
+    /* .grid-item {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      width: 19em;
+    }
+
+    .grid-item2 {
+      font-size: 100px;
+      text-align: center;
+      padding-top: 40px;
+    }
+
+    .grid-item3 {
+      font-size: 100px;
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    .time {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      padding: 20px;
+    } */
+  </style>
+</head>
+<script>
+  var Http = new XMLHttpRequest();
+  var url = 'https://nhl-score-api.herokuapp.com/api/scores/latest';
+
+  // var score1home = "0";
+  // var score2home = "0";
+  // var score3home = "0";
+  // var score4home = "0";
+  // var score1away = "0";
+  // var score2away = "0";
+  // var score3away = "0";
+  // var score4away = "0";
+
+  // var team1home = "----";
+  // var team2home = "----";
+  // var team3home = "----";
+  // var team4home = "----";
+  // var team1away = "----";
+  // var team2away = "----";
+  // var team3away = "----";
+  // var team4away = "----";
+
+  // var time1 = "---";
+  // var time2 = "---";
+  // var time3 = "---";
+  // var time4 = "---";
+
+
+  Http.open("GET", url);
+  Http.send();
+
+  showGames = 6
+  currentSpot = 0
+
+  setInterval(update, 15000);
+  function update() {
+    // console.log(Http.responseText)
+    var games = JSON.parse(Http.responseText)["games"];
+    var numGames = Object.keys(games).length
+
+    var homeTeam = "---"
+    var awayTeam = "---"
+    var homeScore = "---"
+    var awayScore = "---"
+    var timeRemaining = "---"
+    var period = "---"
+    for (i = 0; i < showGames; i++) {
+      if (currentSpot >= numGames) {
+        currentSpot = 0
+      }
+      getScores(currentSpot, numGames)
+      currentSpot += 1;
+    }
+
+
+
+
+    // div = document.getElementById('test');
+    // div.insertAdjacentHTML('beforeend', str);
+
+    // time1 = games[0]["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"];
+    // team1away = games[0]["teams"]["away"]["abbreviation"];
+    // team1home = games[0]["teams"]["home"]["abbreviation"];
+    // score1away = games[0]["scores"][team1home];
+    // score1home = games[0]["scores"][team1away];
+
+    // time2 = games[1]["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"];
+    // team2away = games[1]["teams"]["away"]["abbreviation"];
+    // team2home = games[1]["teams"]["home"]["abbreviation"];
+    // score2away = games[1]["scores"][team2home];
+    // score2home = games[1]["scores"][team2away];
+
+    // document.getElementById('score1home').innerHTML = score1home;
+    // document.getElementById('score2home').innerHTML = score2home;
+    // document.getElementById('score3home').innerHTML = score3home;
+    // document.getElementById('score4home').innerHTML = score4home;
+    // document.getElementById('score1away').innerHTML = score1away;
+    // document.getElementById('score2away').innerHTML = score2away;
+    // document.getElementById('score3away').innerHTML = score3away;
+    // document.getElementById('score4away').innerHTML = score4away;
+
+    // document.getElementById('team1home').innerHTML = team1home;
+    // document.getElementById('team1away').innerHTML = team1away;
+    // document.getElementById('team2home').innerHTML = team2home;
+    // document.getElementById('team2away').innerHTML = team2away;
+    // document.getElementById('team3home').innerHTML = team3home;
+    // document.getElementById('team3away').innerHTML = team3away;
+    // document.getElementById('team4home').innerHTML = team4home;
+    // document.getElementById('team4away').innerHTML = team4away;
+
+    // document.getElementById('time1').innerHTML = time1;
+    // document.getElementById('time2').innerHTML = time2;
+    // document.getElementById('time3').innerHTML = time3;
+    // document.getElementById('time4').innerHTML = time4;
+
+  }
+  function getScores(currentSpot, games) {
+    var game = games[i]
+    var homeTeam = "---"
+    var awayTeam = "---"
+    var homeScore = "-"
+    var awayScore = "-"
+    var timeRemaining = "0:00"
+    var periodNum = 0
+    var isOvertime = false
+    var isShootout = false
+
+    // Team names
+    homeTeam = game["teams"]["home"]["abbreviation"]
+    awayTeam = game["teams"]["away"]["abbreviation"]
+
+    // Scores
+    homeScore = game["scores"][homeTeam]
+    awayScore = game["scores"][awayTeam]
+
+    // Overtime and Shootout
+    if (game["scores"]["overtime"] == true) {
+      isOvertime = true
+    }
+    if (game["scores"]["shootout"] == true) {
+      isShootout = true
+    }
+
+    // Time and Period
+    if (game["status"]["state"] === "LIVE") {
+      timeRemaining = game["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"]
+      period = game["status"]["progress"]["currentPeriodOrdinal"]
+    } else if (game["status"]["state"] === "FINAL") {
+      timeRemaining = "FINAL"
+      period = "---"
+    } else if (game["status"]["state"] === "PREVIEW") {
+      timeRemaining = "20:00"
+      period = 1
+    } else {
+      timeRemaining = "Error"
+      period = "Err"
+    }
+  }
+</script>
+
+
+<body>
+  <div class="overallGrid">
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+    <div class="gameBox">
+      <div class="teamsBox">
+        <div>
+          FLA
+        </div>
+        <div>
+          NYI
+        </div>
+      </div>
+      <div class="scoreBox">
+        <div>
+          3
+        </div>
+        <div>
+          2
+        </div>
+      </div>
+      <div class="timeBox">
+        <div>
+          20:00
+        </div>
+        <div class="periodBox">
+          1st
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

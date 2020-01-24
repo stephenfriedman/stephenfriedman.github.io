@@ -1,0 +1,196 @@
+{
+  "date": {
+    "raw": "2017-10-16",
+    "pretty": "Mon Oct 16"
+  },
+  "games": [
+    {
+      "status": {
+        "state": "FINAL"
+      },
+      "startTime": "2016-02-29T00:00:00Z",
+      "goals": [
+        {
+          "period": "OT",
+          "scorer": {
+            "player": "David Krejci",
+            "seasonTotal": 1
+          },
+          "assists": [
+            {
+              "player": "Torey Krug",
+              "seasonTotal": 3
+            },
+            {
+              "player": "Zdeno Chara",
+              "seasonTotal": 2
+            }
+          ],
+          "team": "BOS",
+          "min": 2,
+          "sec": 36,
+          "strength": "PPG"
+        }
+      ],
+      "scores": {
+        "BOS": 4,
+        "CHI": 3,
+        "overtime": true
+      },
+      "teams": {
+        "away": {
+          "abbreviation": "BOS",
+          "id": 6
+        },
+        "home": {
+          "abbreviation": "CHI",
+          "id": 16
+        }
+      },
+      "preGameStats": {
+        "records": {
+          "BOS": {
+            "wins": 43,
+            "losses": 31,
+            "ot": 7
+          },
+          "CHI": {
+            "wins": 50,
+            "losses": 22,
+            "ot": 9
+          }
+        }
+      },
+      "currentStats": {
+        "records": {
+          "BOS": {
+            "wins": 44,
+            "losses": 31,
+            "ot": 7
+          },
+          "CHI": {
+            "wins": 50,
+            "losses": 22,
+            "ot": 10
+          }
+        },
+        "streaks": {
+          "BOS": {
+            "count": 2,
+            "type": "WINS"
+          },
+          "CHI": {
+            "count": 1,
+            "type": "OT"
+          }
+        },
+        "standings": {
+          "BOS": {
+            "leagueRank": "8",
+            "pointsFromPlayoffSpot": "+17"
+          },
+          "CHI": {
+            "leagueRank": "25",
+            "pointsFromPlayoffSpot": "-4"
+          }
+        }
+      }
+    },
+    {
+      "status": {
+        "state": "LIVE",
+        "progress": {
+          "currentPeriod": 3,
+          "currentPeriodOrdinal": "3rd",
+          "currentPeriodTimeRemaining": {
+            "pretty": "01:58",
+            "min": 1,
+            "sec": 58
+          }
+        }
+      },
+      "startTime": "2016-02-29T02:30:00Z",
+      "goals": [
+        {
+          "period": "OT",
+          "scorer": {
+            "player": "Kyle Turris",
+            "seasonTotal": 1
+          },
+          "assists": [
+            {
+              "player": "Mika Zibanejad",
+              "seasonTotal": 3
+            }
+          ],
+          "team": "OTT",
+          "min": 17,
+          "sec": 30,
+          "emptyNet": true
+        }
+      ],
+      "scores": {
+        "OTT": 3,
+        "DET": 1
+      },
+      "teams": {
+        "away": {
+          "abbreviation": "OTT",
+          "id": 9
+        },
+        "home": {
+          "abbreviation": "DET",
+          "id": 17
+        }
+      },
+      "preGameStats": {
+        "records": {
+          "OTT": {
+            "wins": 43,
+            "losses": 28,
+            "ot": 10
+          },
+          "DET": {
+            "wins": 33,
+            "losses": 36,
+            "ot": 12
+          }
+        }
+      },
+      "currentStats": {
+        "records": {
+          "OTT": {
+            "wins": 43,
+            "losses": 28,
+            "ot": 10
+          },
+          "DET": {
+            "wins": 33,
+            "losses": 36,
+            "ot": 12
+          }
+        },
+        "streaks": {
+          "OTT": {
+            "count": 1,
+            "type": "WINS"
+          },
+          "DET": {
+            "count": 1,
+            "type": "LOSSES"
+          }
+        },
+        "standings": {
+          "OTT": {
+            "leagueRank": "29",
+            "pointsFromPlayoffSpot": "+2"
+          },
+          "DET": {
+            "leagueRank": "23",
+            "pointsFromPlayoffSpot": "0"
+          }
+        }
+      }
+    }
+  ]
+}
