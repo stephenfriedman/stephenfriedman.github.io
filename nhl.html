@@ -52,60 +52,12 @@
       font-weight: normal;
       text-align: center;
     }
-
-    /* .grid-item {
-      background-color: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(0, 0, 0, 0.8);
-      padding: 20px;
-      width: 19em;
-    }
-
-    .grid-item2 {
-      font-size: 100px;
-      text-align: center;
-      padding-top: 40px;
-    }
-
-    .grid-item3 {
-      font-size: 100px;
-      text-align: center;
-      padding-top: 20px;
-    }
-
-    .time {
-      background-color: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(0, 0, 0, 0.8);
-      padding: 20px;
-    } */
   </style>
 </head>
 <script>
+
   var Http = new XMLHttpRequest();
   var url = 'https://nhl-score-api.herokuapp.com/api/scores/latest';
-
-  // var score1home = "0";
-  // var score2home = "0";
-  // var score3home = "0";
-  // var score4home = "0";
-  // var score1away = "0";
-  // var score2away = "0";
-  // var score3away = "0";
-  // var score4away = "0";
-
-  // var team1home = "----";
-  // var team2home = "----";
-  // var team3home = "----";
-  // var team4home = "----";
-  // var team1away = "----";
-  // var team2away = "----";
-  // var team3away = "----";
-  // var team4away = "----";
-
-  // var time1 = "---";
-  // var time2 = "---";
-  // var time3 = "---";
-  // var time4 = "---";
-
 
   Http.open("GET", url);
   Http.send();
@@ -113,10 +65,10 @@
   showGames = 6
   currentSpot = 0
 
-  setInterval(update, 15000);
+  setInterval(update, 5000);
   function update() {
-    // console.log(Http.responseText)
-    var games = JSON.parse(Http.responseText)["games"];
+    var allGames = JSON.parse(Http.responseText)["games"];
+    var games = JSON.parse(allGames)["games"];
     var numGames = Object.keys(games).length
 
     var homeTeam = "---"
@@ -129,54 +81,12 @@
       if (currentSpot >= numGames) {
         currentSpot = 0
       }
-      getScores(currentSpot, numGames)
+      getScores(currentSpot,games,i)
       currentSpot += 1;
     }
-
-
-
-
-    // div = document.getElementById('test');
-    // div.insertAdjacentHTML('beforeend', str);
-
-    // time1 = games[0]["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"];
-    // team1away = games[0]["teams"]["away"]["abbreviation"];
-    // team1home = games[0]["teams"]["home"]["abbreviation"];
-    // score1away = games[0]["scores"][team1home];
-    // score1home = games[0]["scores"][team1away];
-
-    // time2 = games[1]["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"];
-    // team2away = games[1]["teams"]["away"]["abbreviation"];
-    // team2home = games[1]["teams"]["home"]["abbreviation"];
-    // score2away = games[1]["scores"][team2home];
-    // score2home = games[1]["scores"][team2away];
-
-    // document.getElementById('score1home').innerHTML = score1home;
-    // document.getElementById('score2home').innerHTML = score2home;
-    // document.getElementById('score3home').innerHTML = score3home;
-    // document.getElementById('score4home').innerHTML = score4home;
-    // document.getElementById('score1away').innerHTML = score1away;
-    // document.getElementById('score2away').innerHTML = score2away;
-    // document.getElementById('score3away').innerHTML = score3away;
-    // document.getElementById('score4away').innerHTML = score4away;
-
-    // document.getElementById('team1home').innerHTML = team1home;
-    // document.getElementById('team1away').innerHTML = team1away;
-    // document.getElementById('team2home').innerHTML = team2home;
-    // document.getElementById('team2away').innerHTML = team2away;
-    // document.getElementById('team3home').innerHTML = team3home;
-    // document.getElementById('team3away').innerHTML = team3away;
-    // document.getElementById('team4home').innerHTML = team4home;
-    // document.getElementById('team4away').innerHTML = team4away;
-
-    // document.getElementById('time1').innerHTML = time1;
-    // document.getElementById('time2').innerHTML = time2;
-    // document.getElementById('time3').innerHTML = time3;
-    // document.getElementById('time4').innerHTML = time4;
-
   }
-  function getScores(currentSpot, games) {
-    var game = games[i]
+  function getScores(currentSpot, games, position) {
+    var game = games[currentSpot]
     var homeTeam = "---"
     var awayTeam = "---"
     var homeScore = "-"
@@ -216,6 +126,15 @@
       timeRemaining = "Error"
       period = "Err"
     }
+ 
+    position=position+1
+    document.getElementById("awayTeam"+position.toString()).innerHTML = awayTeam;
+    document.getElementById("homeTeam"+position.toString()).innerHTML = homeTeam;
+    document.getElementById("awayScore"+position.toString()).innerHTML = awayScore;
+    document.getElementById("homeScore"+position.toString()).innerHTML = homeScore;
+    document.getElementById("timeRemaining"+position.toString()).innerHTML = timeRemaining;
+    document.getElementById("periodNum"+position.toString()).innerHTML = periodNum;
+
   }
 </script>
 
@@ -224,160 +143,160 @@
   <div class="overallGrid">
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam1">
           FLA
         </div>
-        <div>
+        <div id="homeTeam1">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore1">
           3
         </div>
-        <div>
+        <div id="homeScore1">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining1">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum1">
           1st
         </div>
       </div>
     </div>
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam2">
           FLA
         </div>
-        <div>
+        <div id="homeTeam2">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore2">
           3
         </div>
-        <div>
+        <div id="homeScore2">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining2">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum2">
           1st
         </div>
       </div>
     </div>
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam3">
           FLA
         </div>
-        <div>
+        <div id="homeTeam3">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore3">
           3
         </div>
-        <div>
+        <div id="homeScore3">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining3">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum3">
           1st
         </div>
       </div>
     </div>
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam4">
           FLA
         </div>
-        <div>
+        <div id="homeTeam4">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore4">
           3
         </div>
-        <div>
+        <div id="homeScore4">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining4">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum4">
           1st
         </div>
       </div>
     </div>
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam5">
           FLA
         </div>
-        <div>
+        <div id="homeTeam5">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore5">
           3
         </div>
-        <div>
+        <div id="homeScore5">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining5">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum5">
           1st
         </div>
       </div>
     </div>
     <div class="gameBox">
       <div class="teamsBox">
-        <div>
+        <div id="awayTeam6">
           FLA
         </div>
-        <div>
+        <div id="homeTeam6">
           NYI
         </div>
       </div>
       <div class="scoreBox">
-        <div>
+        <div id="awayScore6">
           3
         </div>
-        <div>
+        <div id="homeScore6">
           2
         </div>
       </div>
       <div class="timeBox">
-        <div>
+        <div id="timeRemaining6">
           20:00
         </div>
-        <div class="periodBox">
+        <div class="periodBox" id="periodNum6">
           1st
         </div>
       </div>
-    </div>
+    </div>   
   </div>
 </body>
 
