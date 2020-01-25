@@ -1,169 +1,115 @@
 <!DOCTYPE html>
 <html>
 
+  <script>
+
+    var Http = new XMLHttpRequest();
+    // var url = 'https://nhl-score-api.herokuapp.com/api/scores/latest';
+  
+    Http.open("GET", url);
+    Http.send();
+  
+    showGames = 6
+    currentSpot = 0
+    interval = 5000
+    setInterval(update, interval);
+    function update() {
+      var allGames = JSON.parse(Http.responseText)["games"];
+      if (allGames.length <= 0) {
+        console.log("0 games")
+        interval = 10000
+        var i;
+        for(i=1;i<7;i++){
+        console.log(i.toString())
+        document.getElementById("awayTeam" + i.toString()).innerHTML = "---";
+        document.getElementById("homeTeam" + i.toString()).innerHTML = "---";
+        document.getElementById("awayScore" + i.toString()).innerHTML = "-";
+        document.getElementById("homeScore" + i.toString()).innerHTML = "-";
+        document.getElementById("timeRemaining" + i.toString()).innerHTML = "0:00";
+        document.getElementById("periodNum" + i.toString()).innerHTML = "-";
+        }
+        return
+      }
+      var games = JSON.parse(allGames)["games"];
+      var numGames = Object.keys(games).length
+      if (numGames <= 0) {
+        return
+      }
+      var homeTeam = "---"
+      var awayTeam = "---"
+      var homeScore = "---"
+      var awayScore = "---"
+      var timeRemaining = "---"
+      var period = "---"
+      for (i = 0; i < showGames; i++) {
+        if (currentSpot >= numGames) {
+          currentSpot = 0
+        }
+        getScores(currentSpot, games, i)
+        currentSpot += 1;
+      }
+    }
+    function getScores(currentSpot, games, position) {
+      var game = games[currentSpot]
+      var homeTeam = "---"
+      var awayTeam = "---"
+      var homeScore = "-"
+      var awayScore = "-"
+      var timeRemaining = "0:00"
+      var periodNum = 0
+      var isOvertime = false
+      var isShootout = false
+  
+      // Team names
+      homeTeam = game["teams"]["home"]["abbreviation"]
+      awayTeam = game["teams"]["away"]["abbreviation"]
+  
+      // Scores
+      homeScore = game["scores"][homeTeam]
+      awayScore = game["scores"][awayTeam]
+  
+      // Overtime and Shootout
+      if (game["scores"]["overtime"] == true) {
+        isOvertime = true
+      }
+      if (game["scores"]["shootout"] == true) {
+        isShootout = true
+      }
+  
+      // Time and Period
+      if (game["status"]["state"] === "LIVE") {
+        timeRemaining = game["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"]
+        period = game["status"]["progress"]["currentPeriodOrdinal"]
+      } else if (game["status"]["state"] === "FINAL") {
+        timeRemaining = "FINAL"
+        period = "---"
+      } else if (game["status"]["state"] === "PREVIEW") {
+        timeRemaining = "20:00"
+        period = 1
+      } else {
+        timeRemaining = "Error"
+        period = "Err"
+      }
+  
+      position = position + 1
+      document.getElementById("awayTeam" + position.toString()).innerHTML = awayTeam;
+      document.getElementById("homeTeam" + position.toString()).innerHTML = homeTeam;
+      document.getElementById("awayScore" + position.toString()).innerHTML = awayScore;
+      document.getElementById("homeScore" + position.toString()).innerHTML = homeScore;
+      document.getElementById("timeRemaining" + position.toString()).innerHTML = timeRemaining;
+      document.getElementById("periodNum" + position.toString()).innerHTML = periodNum;
+  
+    }
+  </script>
 <head>
-  <style>
-    .overallGrid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      background-color: #2196F3;
-      padding: 0.5em;
-      grid-gap: 3em 1.5em;
-      text-align: center;
-    }
-
-    .gameBox {
-      display: grid;
-      grid-template-columns: 20% 50% 15% 35%;
-      background-color: rgb(206, 0, 189);
-      height: 16.5em;
-      text-align: center;
-    }
-    .logo {
-
-    }
-
-    .teamsBox {
-      display: grid;
-      grid-template-columns: 200px;
-      text-align: center;
-      font-size: 6em;
-      background-color: rgb(212, 157, 69);
-    }
-
-    .scoreBox {
-      display: grid;
-      grid-template-columns: 50px;
-      text-align: center;
-      font-size: 6em;
-      background-color: rgb(255, 255, 255);
-      font-weight: bold;
-
-
-    }
-
-    .timeBox {
-      display: grid;
-      grid-template-columns: 200px;
-      text-align: center;
-      background-color: rgb(0, 206, 69);
-      font-size: 6em;
-      font-weight: bold;
-    }
-
-    .periodBox {
-      font-weight: normal;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<script>
-
-  var Http = new XMLHttpRequest();
-  var url = 'https://nhl-score-api.herokuapp.com/api/scores/latest';
-
-  Http.open("GET", url);
-  Http.send();
-
-  showGames = 6
-  currentSpot = 0
-  interval = 5000
-  setInterval(update, interval);
-  function update() {
-    var allGames = JSON.parse(Http.responseText)["games"];
-    if (allGames.length <= 0) {
-      console.log("0 games")
-      interval = 10000
-      var i;
-      for(i=1;i<7;i++){
-      console.log(i.toString())
-      document.getElementById("awayTeam" + i.toString()).innerHTML = "---";
-      document.getElementById("homeTeam" + i.toString()).innerHTML = "---";
-      document.getElementById("awayScore" + i.toString()).innerHTML = "-";
-      document.getElementById("homeScore" + i.toString()).innerHTML = "-";
-      document.getElementById("timeRemaining" + i.toString()).innerHTML = "0:00";
-      document.getElementById("periodNum" + i.toString()).innerHTML = "-";
-      }
-      return
-    }
-    var games = JSON.parse(allGames)["games"];
-    var numGames = Object.keys(games).length
-    if (numGames <= 0) {
-      return
-    }
-    var homeTeam = "---"
-    var awayTeam = "---"
-    var homeScore = "---"
-    var awayScore = "---"
-    var timeRemaining = "---"
-    var period = "---"
-    for (i = 0; i < showGames; i++) {
-      if (currentSpot >= numGames) {
-        currentSpot = 0
-      }
-      getScores(currentSpot, games, i)
-      currentSpot += 1;
-    }
-  }
-  function getScores(currentSpot, games, position) {
-    var game = games[currentSpot]
-    var homeTeam = "---"
-    var awayTeam = "---"
-    var homeScore = "-"
-    var awayScore = "-"
-    var timeRemaining = "0:00"
-    var periodNum = 0
-    var isOvertime = false
-    var isShootout = false
-
-    // Team names
-    homeTeam = game["teams"]["home"]["abbreviation"]
-    awayTeam = game["teams"]["away"]["abbreviation"]
-
-    // Scores
-    homeScore = game["scores"][homeTeam]
-    awayScore = game["scores"][awayTeam]
-
-    // Overtime and Shootout
-    if (game["scores"]["overtime"] == true) {
-      isOvertime = true
-    }
-    if (game["scores"]["shootout"] == true) {
-      isShootout = true
-    }
-
-    // Time and Period
-    if (game["status"]["state"] === "LIVE") {
-      timeRemaining = game["status"]["progress"]["currentPeriodTimeRemaining"]["pretty"]
-      period = game["status"]["progress"]["currentPeriodOrdinal"]
-    } else if (game["status"]["state"] === "FINAL") {
-      timeRemaining = "FINAL"
-      period = "---"
-    } else if (game["status"]["state"] === "PREVIEW") {
-      timeRemaining = "20:00"
-      period = 1
-    } else {
-      timeRemaining = "Error"
-      period = "Err"
-    }
-
-    position = position + 1
-    document.getElementById("awayTeam" + position.toString()).innerHTML = awayTeam;
-    document.getElementById("homeTeam" + position.toString()).innerHTML = homeTeam;
-    document.getElementById("awayScore" + position.toString()).innerHTML = awayScore;
-    document.getElementById("homeScore" + position.toString()).innerHTML = homeScore;
-    document.getElementById("timeRemaining" + position.toString()).innerHTML = timeRemaining;
-    document.getElementById("periodNum" + position.toString()).innerHTML = periodNum;
-
-  }
-</script>
-
-
 <body>
   <div class="overallGrid">
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo1"/>
+        <img  id="homeLogo1"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam1">
@@ -192,7 +138,8 @@
     </div>
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo2"/>
+        <img  id="homeLogo2"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam2">
@@ -221,7 +168,8 @@
     </div>
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo3"/>
+        <img  id="homeLogo3"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam3">
@@ -250,7 +198,8 @@
     </div>
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo4"/>
+        <img  id="homeLogo4"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam4">
@@ -279,7 +228,8 @@
     </div>
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo5"/>
+        <img  id="homeLogo5"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam5">
@@ -308,7 +258,8 @@
     </div>
     <div class="gameBox">
       <div class="logo">
-        <img src="logos/NYR.svg"/>
+        <img  id="awayLogo6"/>
+        <img  id="homeLogo6"/>
       </div>
       <div class="teamsBox">
         <div id="awayTeam6">

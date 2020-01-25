@@ -9,3 +9,5 @@ done
 # VGK  https://upload.wikimedia.org/wikipedia/en/a/ac/Vegas_Golden_Knights_logo.svg
 # WPG  https://upload.wikimedia.org/wikipedia/en/9/93/Winnipeg_Jets_Logo_2011.svg
 # ARI  https://upload.wikimedia.org/wikipedia/en/2/27/Arizona_Coyotes.svg
+
+# NHL logo https://upload.wikimedia.org/wikipedia/en/3/3a/05_NHL_Shield.svg
